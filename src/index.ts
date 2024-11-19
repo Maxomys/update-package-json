@@ -1,6 +1,7 @@
 import simpleGit, { CleanOptions } from 'simple-git';
 import { createPullRequest } from './bitbucketClient';
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'fs';
+import isValidVersion from './isValidVersion';
 
 const username = process.env.BITBUCKET_USERNAME!;
 const password = process.env.BITBUCKET_PASSWORD!;
@@ -9,6 +10,10 @@ const branch = process.env.BRANCH!;
 
 const packageName = process.env.PACKAGE_NAME!;
 const packageVersion = process.env.PACKAGE_VERSION!;
+
+if (!isValidVersion(packageVersion)) {
+  console.error('Invalid version format');
+}
 
 // prepare an empty repo directory
 if (existsSync('./repo')) {
